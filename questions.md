@@ -15,20 +15,22 @@ briefly describing each step
 - how TLS ensures authentication, confidentiality, and integrity
 ***
 
-Un certificato digitale è un file che certifica il binding tra un identità e la propria public key. Ciò permette di poter comunicare con un'altra entità con la certezza della sua identità, utilizzando la **PKI** per evitare il problema del **Man-In-The-Middle**.
+Un certificato digitale è un file che certifica il binding tra un identità e la propria public key. Ciò permette di poter comunicare con un'altra entità con certezza della sua identità, utilizzando la **PKI** per evitare attacchi **Man-In-The-Middle**.
 
-Il certificato è firmato da un **Certification Authority**, che attesta la correttezza e l'integrità del documento. Per verificare che anche il **Certification Authority** sia autentico, si procede ricorsivamente a validare anche i certificati dei **CA**, fino a trovare un **root-CA**, dei speciali **CA** le quali public keys sono *hard-codate* nella memoria dei dispositivi. Ciò può essere, però, vulnerabile ad aggiornamenti malevoli di sistema, che potrebbero sovrascrivere i **root-CA** con falsi certificati e oltrepassare la sicurezza dei certificati digitali. Un'entità, per ottenere un proprio certificato digitale, deve riferirsi ad un **Registration Authority**, che si occupa di validare l'identità del richiedente. Se il risultato della validazione è positiva, l\'**RA** richiede al **CA** di fornire all'entità il certificato, fornendo i dati riguardo l'identità di essa. Tutti i certificati firmati dal **CA** sono poi inviati ai **Validation Authorities**, che fornisce le informazioni riguardo al certificato per conto del **CA**.
+Il certificato è firmato da un **Certification Authority**, che attesta la correttezza e l'integrità del documento rilasciato. Per verificare che anche il **Certification Authority** sia autentico, si procede ricorsivamente a validare anche i certificati dei **CA**, fino a trovare un **root-CA**. I **root-CA** sono dei speciali **CA** le quali public keys sono *hard-codate* nella memoria dei dispositivi. Ciò può essere, però, vulnerabile ad aggiornamenti malevoli di sistema, che potrebbero manomettere i certificati dei **root-CA** e **bypassare** l'intera infrastruttura dei certificati digitali.
 
-Uno dei protocolli che usa il sistema dei certificati digitali è il **TLS**. Il **TLS** utilizza il **PKI** per permettere ai due capi della comunicazione di generare una **shared secret key** e criptare la sessione. 
+Un'entità, per ottenere un proprio certificato digitale, deve riferirsi ad un **Registration Authority**, che si occupa di validare l'identità del richiedente. Se il risultato della validazione è positiva, l\'**RA** richiede al **CA** di fornire all'entità il nuovo certificato, fornendo i dati riguardo l'identità di essa. Tutti i certificati firmati dal **CA** sono poi inviati ai **Validation Authorities**, che forniscono le informazioni riguardo al certificato per conto del **CA**.
+
+Uno dei protocolli che implementa l'utilizzo dei certificati digitali è il **TLS**. Il **TLS** utilizza il **PKI** per permettere ai due capi della comunicazione di generare una **shared secret key** e criptare la sessione. 
 
 Durante la fase iniziale del **TLS 1.2**, il client invia un messaggio detto **Client Hello**, dove notifica al server quali sistemi crittografici supporta e quale versione del **TLS** vuole usare.
 In risposta, il server risponde con il **Server Hello**, contenente alcuni dati riguardo alla sessione, come l'ID, protocolli e *cypher suite*. Il messaggio contiene la **pre-master key**, che servirà per generare il **master secret**. Se richiesto dal client, il server dovrà inviare il proprio certificato **X.509** per iniziare la comunicazione autenticata. Il server potrebbe richiedere anche al client di inviare il proprio certificato per la mutua autenticazione.
-Nel passaggio successivo il client, se richiesto, manderà il proprio certificato **X.509** e il **Certificate Verify**, una prova esplicitò della verifica del certificato. Inoltre, invia il suo valore della **pre-master key**.
-I due device, dopo aver terminato la parte di *handshake* precedente correttamente, inviano un byte `0xFF` dove annunciano di accettare la **cypher suite** concordata.
+Nel passaggio successivo il client, se richiesto, manderà il proprio certificato **X.509** e il **Certificate Verify**, una prova esplicita della verifica del certificato. Inoltre, invia il suo valore della **pre-master key**.
+I due device, dopo aver terminato la parte di *handshake* precedente in modo corretto, inviano un byte `0xFF` dove confermano di accettare la **cypher suite** concordata.
 
 Il **TLS** permette di assicurare, con un unico protocollo, che vengano rispettati tutti e tre i principi del **CIA**. 
-- La mutua autenticazione è effettuata durante la fase di *handshake*. I due dispositivi scambiano i certificati, in modo da verificare identità dell'utente è scadenza o revoca del documento.
-- Tutte le comunicazioni successive all'handshake sono cifrate con la **master key** concordata durante l'*handshake*, garantendo la confidialità dello scambio dei messaggi. Utilizzano un sistema di cifratura asimmetrico per lo scambio della chiave simmetrica, poi utilizzano la chiave concordata per utilizzare una *chipher suite* più *lightweight*.
+- La mutua autenticazione viene effettuata durante la fase di *handshake*. I due dispositivi scambiano i certificati, in modo da verificare identità dell'utente, la scadenza o la revoca del documento.
+- Tutte le comunicazioni successive all'handshake sono cifrate con la **secret key** concordata durante l'*handshake*, garantendo la confidenzialità dello scambio dei messaggi. Utilizzano un sistema di cifratura asimmetrica per lo scambio della chiave simmetrica, poi utilizzano la chiave concordata con l'algoritmo di cifratura simmetrica precedentemente concordato.
 - Durante lo scambio dei messaggi viene aggiunto il *Message Authentication Code*, hash generato in funzione della **master key** e del contenuto del messaggi. Permette di valutare l'integrità di un messaggio e di confermare che non ci siano state modifiche dalla versione del mittente.
 
 ### Question 2
@@ -41,11 +43,12 @@ In the context of data protection and privacy:
 ***
 
 **Privacy** è una parola che può avere diversi significati, che variano in base al contesto.
-**Privacy** può essere intesa come l'abilità di un utente di controllare il possesso e l'utilizzo dei propri dati personali nei confronti di entità *third-party*. Oppure **Privacy** può essere le certezze per cui le azioni di un utente non sono direttamente collegabili all'identità della persona.
+**Privacy** può essere intesa come l'abilità di un utente di controllare il possesso e l'utilizzo dei propri dati personali nei confronti di un'organizzazione. Oppure **Privacy** può essere l'anonimità delle azioni che vengono svolte su una determinata piattaforma.
 
-Un **linkage attack** confrontano più database distinti, confrontandone gli attributi comuni. Confrontano i cosiddetti **Quasi Identifiers**, ovvero attributi non univoci che permettono di avere una sufficiente correlazione con l'utente e che, messi a confronto con altri **Quasi Identifiers**, permettono di distinguere un'entità univocamente.
-Inserire un **Quasi Identifier** è male come mettere l'intera identità dell'utente, ma a volta si pone necessario inserirlo per questioni di sicurezza o per effettuare degli studi sui *dataset*.
-Per questo un buon *tradeoff* può essere l'utilizzo della **K-anonimity**, un sistema che permette di generalizzare il contenuto del **Quasi Identifier** senza avere un'eccessiva perdita di dati. Il principio è che un record deve essere non identificabile da almeno *k - 1* altri record.
+I **linkage attack** uniscono più database distinti, confrontandone gli attributi comuni. Utilizzano i cosiddetti **Quasi Identifiers**, ovvero attributi non univoci che permettono di avere una sufficiente correlazione con l'utente ma che, messi a confronto con altri **Quasi Identifiers**, permettono di distinguere un'entità univocamente.
+L'utilizzo di un **Quasi Identifier** è sbagliato tanto quanto utilizzare l'intera identità dell'utente, ma a volta si pone necessario inserirlo per questioni di sicurezza o per effettuare degli studi su *dataset* che lo riguardano.
+
+Per questo un buon *tradeoff* può essere l'utilizzo della **K-anonimity**, un sistema che permette di generalizzare il contenuto del **Quasi Identifier** senza avere un'eccessiva perdita di dati. Il principio è che un record deve essere non identificabile tra almeno $k-1$ altri record.
 
 ### Question 3
 
@@ -53,8 +56,9 @@ Per questo un buon *tradeoff* può essere l'utilizzo della **K-anonimity**, un s
 Describe a Cross-Site Scripting attack and the main mitigations that can be used to prevent it
 ***
 
-Il **Cross-Site Scripting** è una vulnerabilità a livello applicazione che permette di eseguire codice malevolo sul browser dell'utente attaccato. Ciò è causato dal sito, che non effetta adeguati filtri e validazione sui parametri inviati dai client, che possono iniettare tag **HTML** oppure codice **JavaScript** all'interno di form oppure **URL**.
-È utilizzato principalmente per il furto di chiavi di sessioni e informazioni private salvate nel browser dell'utente. Può anche ridirigere l'utente su siti di phishing.
+Il **Cross-Site Scripting** è una vulnerabilità a livello applicazione che permette di eseguire codice malevolo sul browser dell'utente attaccato. Ciò è causato dal codice del sito, che non effetta adeguati filtri sui parametri inviati dai client, che possono iniettare tag **HTML** oppure codice **JavaScript** all'interno di form oppure all'interno di un\'**URL**.
+È utilizzato principalmente per il furto di chiavi di sessione e di informazioni private salvate nel browser dell'utente. Può anche indirizzare l'utente su siti di **phishing** per sottoporlo ad altri tipi di **vulnerabilità**.
+
 I due tipi principali di **XSS** sono:
 - **Reflected XSS**: il contenuto malevolo è all'interno dell'**URL**
 - **Stored XSS**: il contenuto malevolo è precedentemente stato pubblicato su un forum ed è contenuto nel database della piattaforma
@@ -78,10 +82,14 @@ You are a security expert paid to comment on the password manager service and, i
 4. Which encryption primitive would you suggest adopting by the LastHope server to encipher the credentials in each user database? Motivate your answer.
 ***
 
-Ritengo che il sistema che il servizio **LastHope** per criptare le password sia fallaceo. L'utilizzo dello username per effettuare il **salting** dell\'**hash** della **encryption key** . Ciò comporterebbe che la rottura dell\'**hash**, mediante **bruteforce** oppure vulnerabilità della funzione di **hashing**, permetterebbe ad un malintenzionato di decriptare tutte quante le password salvate dell'utente. Una soluzione che proprongo, mantenendo un infrastruttura simile e senza stravolgerla, sarebbe concatenare anche un identificativo univoco della password criptata. Dunque, risulterebbe una encryption key singola e univoca per ogni password salvata. Risolve il problema riscontrato e non aggiunge *overhead* all'infrastruttura. 
-Inoltre, il sistema dell\'**authentication digest** lo ritengo fortemente debole, in quanto è permanente (fino a che non viene cambiata la master password) e non può ne scadere, ne essere revocato senza bloccare l'intero accesso alle password per l'utente. È opportuno che **LastHope** implementi un nuovo sistema di autenticazione, magari utilizzando la **master password** per validare l'accesso e fornire poi all'utente un **token** firmato digitalmente, così da poter filtrare l'autorizzazione all'accesso delle proprie risorse in modo sicuro. 
+Ritengo che il sistema che il servizio **LastHope** usa per criptare le password sia fallaceo. 
+L'utilizzo del solo username per effettuare il **salting** dell\'**hash** della **encryption key** fa sì che se un utente avesse la stessa password per più servizi distinti, allora produrrebbe lo stesso **cypher text**. Dunque un malintenzionato, dopo aver avuto l'accesso ai record di un database, potrebbe vedere ad occhio nudo quali utenti utilizzano la stessa password per più servizi. Può usare questa informazione per effettuare degli attacchi mirati ed aumentare l'efficacia della ricerca di password. 
 
-Il metodo con cui criptare e decriptare le password deve essere **simmetrico** siccome, come descritto dal diagramma, l'utente deve poter accedere alle proprie password mediante password e non attraverso altri metodi come certificati digitali o altri sistemi biometrici. L'algoritmo che userei per criptare le password è l\'**Advanced Encryption Standard**, con chiave a **256 bits**. La chiave sarà la **encryption key**, che dovrà usare un sistema di *hashing* sicuro per nascondere il contenuto delle chiavi. Consiglio l'implementazione dello **SHA3-256**. In questo modo, grazie alla combinazione di **master password**, **username** e **ID della password** l'utente riesce ad ottenere la password del servizio in modo sicuro e pratico.
+Una soluzione possibile è concatenare anche un identificativo univoco del servizio per il quale si sta salvando la password. Di conseguenza, si otterrebbe un\'**encryption key** per ogni password salvata. Risolve il problema riscontrato e non aggiunge *overhead* all'infrastruttura. 
+
+Inoltre, il sistema dell\'**authentication digest** lo ritengo fortemente debole in quanto permanente (fino a che non viene cambiata la master password). Dunque non ha scadenza e non può essere revocato senza bloccare l'intero accesso alle password per l'utente. È opportuno che **LastHope** implementi un nuovo sistema di autenticazione, magari utilizzando la **master password** per validare l'accesso e fornire poi all'utente un **token** non dipendente dalla password principale. 
+
+Il metodo con cui criptare e decriptare le password deve essere **simmetrico** siccome, come descritto dal diagramma, l'utente deve poter accedere alle proprie password mediante la **master password** e non attraverso altri metodi come certificati digitali o altri sistemi biometrici. L'algoritmo che userei per criptare le password è l\'**Advanced Encryption Standard**, con chiave a **256 bits**. La chiave sarà la **encryption key**, che dovrà usare un sistema di *hashing* sicuro per nascondere il contenuto delle chiavi. Consiglio l'implementazione dello **SHA3-256**. In questo modo, grazie alla combinazione di **master password**, **username** e **ID del servizio** l'utente riesce ad ottenere la password in modo sicuro e pratico.
 
 La trasmissione dei dati tra utente e server deve **assolutamente** rispettare pienamente i principi di **confidenzialità** e **integrità**, in quanto il rischio che riscontra la piattaforma e l'utente nella trasmissione di password è critica. La maniera corretta è affidarsi all'ultima versione del **TLS**.
 
