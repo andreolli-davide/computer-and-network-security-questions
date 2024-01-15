@@ -5,15 +5,13 @@ Made by [Davide Andreolli](https://rroll.to/sOPjVJ)
 
 ### Question 1
 
-***
-In the context of TLS and the PKI, describe:
-- what a digital certificate is and what are its main components
-- what a root CA is 
-- how a system can validate a certificate
-- TLS 1.2 handshake works by drawing the message sequence chart and
+> In the context of TLS and the PKI, describe:
+> - what a digital certificate is and what are its main components
+> - what a root CA is 
+> - how a system can validate a certificate
+> - TLS 1.2 handshake works by drawing the message sequence chart and
 briefly describing each step 
-- how TLS ensures authentication, confidentiality, and integrity
-***
+> - how TLS ensures authentication, confidentiality, and integrity
 
 Un certificato digitale è un file che certifica il binding tra un identità e la propria public key. Ciò permette di poter comunicare con un'altra entità con certezza della sua identità, utilizzando la **PKI** per evitare attacchi **Man-In-The-Middle**.
 
@@ -35,12 +33,10 @@ Il **TLS** permette di assicurare, con un unico protocollo, che vengano rispetta
 
 ### Question 2
 
-***
-In the context of data protection and privacy:
-- Give two possible definitions of privacy and briefly comment on them
-- Explain the linkage attack on anonymized dataset with an example
-- Explain the trade-off between anonymity and utility in the context of realizing data sets
-***
+> In the context of data protection and privacy:
+> - Give two possible definitions of privacy and briefly comment on them
+> - Explain the linkage attack on anonymized dataset with an example
+> - Explain the trade-off between anonymity and utility in the context of realizing data sets
 
 **Privacy** è una parola che può avere diversi significati, che variano in base al contesto.
 **Privacy** può essere intesa come l'abilità di un utente di controllare il possesso e l'utilizzo dei propri dati personali nei confronti di un'organizzazione. Oppure **Privacy** può essere l'anonimità delle azioni che vengono svolte su una determinata piattaforma.
@@ -52,9 +48,7 @@ Per questo un buon *tradeoff* può essere l'utilizzo della **K-anonimity**, un s
 
 ### Question 3
 
-***
-Describe a Cross-Site Scripting attack and the main mitigations that can be used to prevent it
-***
+> Describe a Cross-Site Scripting attack and the main mitigations that can be used to prevent it
 
 Il **Cross-Site Scripting** è una vulnerabilità a livello applicazione che permette di eseguire codice malevolo sul browser dell'utente attaccato. Ciò è causato dal codice del sito, che non effetta adeguati filtri sui parametri inviati dai client, che possono iniettare tag **HTML** oppure codice **JavaScript** all'interno di form oppure all'interno di un\'**URL**.
 È utilizzato principalmente per il furto di chiavi di sessione e di informazioni private salvate nel browser dell'utente. Può anche indirizzare l'utente su siti di **phishing** per sottoporlo ad altri tipi di **vulnerabilità**.
@@ -68,19 +62,17 @@ I due tipi principali di **XSS** sono:
 
 ### Question 1
 
-***
-LastHope offers a password manager service structured as depicted in the figure.
+> LastHope offers a password manager service structured as depicted in the figure.
 
-![Password manager service](images/23-01-27-q1.png) 
+> ![Password manager service](images/23-01-27-q1.png) 
 
-When users create accounts on their devices, they set a user name and a master password. The former is used as a salt that is concatenated with the latter (see the box labeled with `||` in the figure) and then hashed to create a digest that is, in turn, used to generate an encryption key for encrypting all credentials of a user before sending them to the LastHope server. Then, the encryption key is hashed again and an authentication digest is sent to the LastHope server over a secure channel. In the LastHope server, a database of credentials is created for each user where the authentication digest is stored together with all the user's credentials.
-You are a security expert paid to comment on the password manager service and, in particular, to answer the following questions:
-
-1. Which of the available hash function algorithms would you advise using in the Local device? Motivate your answer, highlighting advantages and possible disadvantages.
-2. Is it secure enough to use the user name as the salt to derive the encryption keys? Motivate your answer and suggest, if the case, possible extensions.
-3. Which security service would you adopt to make the communication channel between the Local device and the LastHope server secure? Motivate your foganswer and discuss possible configuration problems of the proposed security service.
-4. Which encryption primitive would you suggest adopting by the LastHope server to encipher the credentials in each user database? Motivate your answer.
-***
+> When users create accounts on their devices, they set a user name and a master password. The former is used as a salt that is concatenated with the latter (see the box labeled with `||` in the figure) and then hashed to create a digest that is, in turn, used to generate an encryption key for encrypting all credentials of a user before sending them to the LastHope server. Then, the encryption key is hashed again and an authentication digest is sent to the LastHope server over a secure channel. In the LastHope server, a database of credentials is created for each user where the authentication digest is stored together with all the user's credentials.
+> You are a security expert paid to comment on the password manager service and, in particular, to answer the following questions:
+> 
+> 1. Which of the available hash function algorithms would you advise using in the Local device? Motivate your answer, highlighting advantages and possible disadvantages.
+> 2. Is it secure enough to use the user name as the salt to derive the encryption keys? Motivate your answer and suggest, if the case, possible extensions.
+> 3. Which security service would you adopt to make the communication channel between the Local device and the LastHope server secure? Motivate your foganswer and discuss possible configuration problems of the proposed security service.
+> 4. Which encryption primitive would you suggest adopting by the LastHope server to encipher the credentials in each user database? Motivate your answer.
 
 Ritengo che il sistema che il servizio **LastHope** usa per criptare le password sia fallaceo. 
 L'utilizzo del solo username per effettuare il **salting** dell\'**hash** della **encryption key** fa sì che se un utente avesse la stessa password per più servizi distinti, allora produrrebbe lo stesso **cypher text**. Dunque un malintenzionato, dopo aver avuto l'accesso ai record di un database, potrebbe vedere ad occhio nudo quali utenti utilizzano la stessa password per più servizi. Può usare questa informazione per effettuare degli attacchi mirati ed aumentare l'efficacia della ricerca di password. 
@@ -95,16 +87,14 @@ La trasmissione dei dati tra utente e server deve **assolutamente** rispettare p
 
 ### Question 2 
 
-***
-In the context of access control, describe the general architecture of an access control enforcement mechanism including:
-- subjects 
-- requests 
-- guard
-- policy 
-- isolation boundaries 
-- audit log 
-- the role of authentication and authorization
-***
+> In the context of access control, describe the general architecture of an access control enforcement mechanism including:
+> - subjects 
+> - requests 
+> - guard
+> - policy 
+> - isolation boundaries 
+> - audit log 
+> - the role of authentication and authorization
 
 L\'**Access Control** è il processo che permette di garantire o negare l'accesso di una risorsa ad un utente in base a delle **policies**.
 
@@ -118,9 +108,7 @@ La sua architettura è composta da:
 
 ### Question 3
 
-***
-Define the notions of Confidentiality, Integrity, and Availability
-***
+> Define the notions of Confidentiality, Integrity, and Availability
 
 **CIA** è l'acronimo di:
 - **Confidenzialità**: Non dovrebbe permettere la divulgazione un'informazione privata
@@ -134,23 +122,21 @@ Sono tre pilastri fondanti dell\'**Information Security**.
 
 ### Question 1
 
-***
-The BrokenWare company uses a tool capable of deploying and serving virtual computers. The tool contains a critical flaw that can be exploited to compromise any system. The vendor releases a patch for the vulnerability on 23 February 2021, but BrokenWare does not update its systems.
-
-At the beginning of February 2023, the company is hit by a ransomware that is able to encrypt all the company data by exploiting the unpatched vulnerability.
-
-You are a security expert paid to comment on why it is virtually impossible to decrypt BrokenWare’s data without paying the ransom. 
-
-Specifically, you should explain the reason by first defining the notions of
-- cryptosystem
-- Kerckhoffs principle
-- key management and its purpose
-- symmetric key cryptography
-- asymmetric key cryptography
-
-Finally, you should describe
-- which security architecture and best practices could have mitigated this kind of attack
-***
+> The BrokenWare company uses a tool capable of deploying and serving virtual computers. The tool contains a critical flaw that can be exploited to compromise any system. The vendor releases a patch for the vulnerability on 23 February 2021, but BrokenWare does not update its systems.
+> 
+> At the beginning of February 2023, the company is hit by a ransomware that is able to encrypt all the company data by exploiting the unpatched vulnerability.
+> 
+> You are a security expert paid to comment on why it is virtually impossible to decrypt BrokenWare’s data without paying the ransom. 
+> 
+> Specifically, you should explain the reason by first defining the notions of
+> - cryptosystem
+> - Kerckhoffs principle
+> - key management and its purpose
+> - symmetric key cryptography
+> - asymmetric key cryptography
+> 
+> Finally, you should describe
+> - which security architecture and best practices could have mitigated this kind of attack
 
 Un **Cryptosystem** è un set composto da 5 elementi: 
 - $E$: **Encryption Algorithm**
@@ -178,12 +164,10 @@ Per prevenire questi tipi di attachi è necessario che un team di specialisti ef
 
 ### Question 2
 
-***
-In the context of the Diffie-Hellman key exchange, describe:
-- the protocol
-- the Men-In-the-Middle (MITM) attack
-- how it is possible to mitigate the MITM attack
-***
+> In the context of the Diffie-Hellman key exchange, describe:
+> - the protocol
+> - the Men-In-the-Middle (MITM) attack
+> - how it is possible to mitigate the MITM attack
 
 Il **Diffie-Hellman key exchange** è un protocollo che permette a due dispositivi di scegliere e scambiare una **shared secret key** senza doverla inviare in chiaro su di un mezzo trasmissivo.
 
@@ -206,9 +190,7 @@ Nel **Man-in-the-Middle**, un malintenzionato si pone in mezzo alla comunicazion
 
 ### Question 3 
 
-***
-Define the notions of vulnerability and threat and give (at least) an example for each one.
-***
+> Define the notions of vulnerability and threat and give (at least) an example for each one.
 
 Una **vulnerabilità** è una falla all'interno di un sistema informatico, in una procedura o in un'implementazione, che può dar spazio ad **exploits** eseguiti da malintenzionati, detti **threats**.
 Le vulnerabilità agiscono su diversi lati di un'infrastruttura:
@@ -222,9 +204,7 @@ Le vulnerabilità agiscono su diversi lati di un'infrastruttura:
 
 ### Question 4
 
-***
-Explain the framework of Attribute Based Access Control (ABAC), in particular how an access request is processed, and the reasons for which it has been introduced with respect to previous models (such as RBAC).
-***
+> Explain the framework of Attribute Based Access Control (ABAC), in particular how an access request is processed, and the reasons for which it has been introduced with respect to previous models (such as RBAC).
 
 L'**Attribute Based Access Control** è una tipologia di **Access Control** che concede l'autorizzazione in base a 3 principali attributi:
 - **User attributes**: nome, organizzazione, età
@@ -241,9 +221,7 @@ Queste **policies** possono confliggere tra loro, dunque si può procede in due 
 
 ### Question 1
 
-***
-Define the notion of hash function and its main properties: (a) Ease of computation, (b) Compression, (c) One-way, (d) Weak collision resistance, and (e) Strong collision resistance.
-***
+> Define the notion of hash function and its main properties: (a) Ease of computation, (b) Compression, (c) One-way, (d) Weak collision resistance, and (e) Strong collision resistance.
 
 Una **funzione hash** è una **1-way function** che, dato un parametro di lunghezza variabile, genera un **digest** di dimensione fissa. È detta **1-way** perchè deve essere facile da calcolare ma difficile computazionalmente da invertire.
 
@@ -258,22 +236,18 @@ Una buona funzione **hash** ha le seguenti caratteristiche:
 
 ### Question 4 
 
-***
-Briefly describe the notion of Data Protection Impact Assessment (DPIA) according to the Art. 35 of the GDPR.
-***
+> Briefly describe the notion of Data Protection Impact Assessment (DPIA) according to the Art. 35 of the GDPR.
 
 L\'**articolo 35** del **GDPR** parla del **Data Protection Impact Assessment**, un documento che deve essere redatto da un'organizzazione prima di procedere a rendere attivo un servizio, dove descrive l'impatto che i dati che verranno raccolti, come verranno processati e la criticità del sistema.
 
 ### Question 3 
 
-***
-Explain the notion of Multi-level security by illustrating it with the Bell-La Padula model; in particular discuss the notions of 
-- security level
-- need-to-know
-- dominance relation 
-- no-read-up rule
-- no-write-down rule.
-***
+> Explain the notion of Multi-level security by illustrating it with the Bell-La Padula model; in particular discuss the notions of 
+> - security level
+> - need-to-know
+> - dominance relation 
+> - no-read-up rule
+> - no-write-down rule.
 
 Il **Multi-level Security** è un sistema che etichetta le risorse con un **Sensitivity Label** $L = (S,N)$, dove:
 - $S$ è un **set ordinato di priorità**, come $\text{TopSecret} \ge \text{Secret} \ge \text{Confidential} \ge \text{Unclassified}$
@@ -294,9 +268,7 @@ $$ S_1 \ge S_2 \quad N_1 \subseteq N_2 $$
 
 ### Question 2
 
-***
-Describe an SQL injection attack. Which are the main mitigations to an SQL injection attack?
-***
+> Describe an SQL injection attack. Which are the main mitigations to an SQL injection attack?
 
 Gli attacchi **SQL Injection** sfruttano la mancante o non sufficiente **sanificazione** degli input di un form. Inserendo delle porzioni di testo specifiche, il **DBMS** può modificare il comportamento di una **query**. In questo modo, malintenzionati possono andare ad ottenere informazioni non raggiungibili normalmente all'interno del database oppure andare a minare l'integrità dei dati al suo interno, modificandoli o eliminandoli.
 
@@ -307,9 +279,7 @@ Alcuni modi con cui è possibile evitare questa vulnerabilità sono:
 
 ### Question 4
 
-***
-Define the notions of risk and vulnerability and give (at least) an example for each one.
-***
+> Define the notions of risk and vulnerability and give (at least) an example for each one.
 
 Il **rischio** è la probabilità che un **exploit** venga utilizzato da un **threat** (o **hacker**). Il fattore di rischio può essere dettato dall'importanza di una risorsa e il danno che può causare se alterata o pubblicata.
 Una vulnerabilità è una **debolezza** di un sistema informatico, causato da un errore di implementazione, un errore logico, un errore del sistema di sicurezza, etc. che può essere usato da un malintenzionato per minare l'attività di un servizio. Una vulnerabilità può essere classificata in base all'impatto che un **exploit** di essa può portare. Ci sono degli standard industriali, detti **CVSS**, che permettono di valutare il grado di rischio di una **vulnerabilità** o **falla**.
@@ -319,14 +289,12 @@ Una vulnerabilità è una **debolezza** di un sistema informatico, causato da un
 
 ### Question 3
 
-***
-In the context of access control, explain:
-- explain what is a confused deputy with the help of an example 
-- how capabilities allow for avoiding a confused deputy attack
-- explain the notion of Discretionary Access Control (DAC)
-- explain the notion of Mandatory Access Control (MAC)
-- discuss the main advantages and disadvantages between DAC and MAC.
-***
+> In the context of access control, explain:
+> - explain what is a confused deputy with the help of an example 
+> - how capabilities allow for avoiding a confused deputy attack
+> - explain the notion of Discretionary Access Control (DAC)
+> - explain the notion of Mandatory Access Control (MAC)
+> - discuss the main advantages and disadvantages between DAC and MAC.
 
 Il **Confused Deputy** è un sistema di **Priviledge Escalation**, dove una avversario senza il permesso di accedere ad una risorsa, scrive nella risorsa mediante un altro soggetto (detto **Deputy**). 
 Il sistema, non conoscendo da chi derivano i permessi, utilizza quelli di entrambi (**Permit overlay**).
@@ -344,14 +312,12 @@ Nel **Mandatory Access Control**, l'utente è associato ad un'organizzaione, che
 
 ### Question 1
 
-***
-Explain how to protect a password file with hashing and salting; discuss 
-- what is hashing 
-- what is salting 
-- why hashing is not enough for protecting passwords and how salting mitigates the problem of hashing 
-- describe the structure of a password file 
-- explain if salts can be stored in clear
-***
+> Explain how to protect a password file with hashing and salting; discuss 
+> - what is hashing 
+> - what is salting 
+> - why hashing is not enough for protecting passwords and how salting mitigates the problem of hashing 
+> - describe the structure of a password file 
+> - explain if salts can be stored in clear
 
 L\'**hashing** è l'applicazione di una funzione con cui, dato un parametro di lunghezza variabile, si ottiene un valore di lunghezza variabile, detto **digest**. È largamente usato per il salvataggio non occulto di password e per il controllo dell'integrità di file e oggetti. Dunque, per nascondere le password all'interno di un **password file** basta registrare, al posto della **password**, il suo **digest**. Poi, ogni volta che un utente prova ad effettuare il login, basterà calcolare allo stesso modo l\'**hash** della **password** data in input e verificare che sia lo stesso.
 
@@ -361,13 +327,11 @@ Un modo per evitare questo problema è concatenare alla **password** un cosiddet
 
 ### Question 3
 
-***
-In the context of the SAML standard 
-- explain its main goal 
-- describe the two scenarios for the Web Single Sign On profile 
-- explain how is it possible to guarantee trust in the assertions consumed by the relying party (hint: remember that assertions are cryptographically signed) 
-- explain how it is possible to avoid man-in-the-middle attacks.
-***
+> In the context of the SAML standard 
+> - explain its main goal 
+> - describe the two scenarios for the Web Single Sign On profile 
+> - explain how is it possible to guarantee trust in the assertions consumed by the relying party (*hint: remember that assertions are cryptographically signed*) 
+> - explain how it is possible to avoid man-in-the-middle attacks.
 
 Il **Security Assertion Markup Language** è uno standard che permette a due sistemi di autenticarsi e ad autorizzarsi mutualmente, in particolare nel caso degli **Identity Provider** e dei **Service Provider**.
 È basato su **XML** ed ha lo scopo di contenere delle **Security Assertions**.
@@ -389,9 +353,7 @@ Da solo, **SAML** non permette di garantire che la trasmissione del file avvenga
 
 ### Question 4 
 
-***
-Explain the notion of pseudo anonymization function, describe at least two possible implementations together with their advantages and disadvantages.
-***
+> Explain the notion of pseudo anonymization function, describe at least two possible implementations together with their advantages and disadvantages.
 
 Una **funzione di pseudoanonimizzazione** produce un identità pseudocasuale applicabile ad un'identità, in modo da poter evitare di associare un informazione ad un'entità in chiaro. Ciò permette di garantire la privacy e di evitare **Linkage Attacks**.
 Ci sono diverse possibili implementazioni di questa funzione:
