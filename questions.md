@@ -106,7 +106,7 @@ In the context of access control, describe the general architecture of an access
 - the role of authentication and authorization
 ***
 
-**Access Control** è il processo che permette di garantire o negare l'accesso ad una o più risorse di un sistema in base a delle **policies**.
+L\'**Access Control** è il processo che permette di garantire o negare l'accesso di una risorsa ad un utente in base a delle **policies**.
 
 La sua architettura è composta da:
 - **Soggetto**: L'entità che effettua la richiesta
@@ -114,7 +114,7 @@ La sua architettura è composta da:
 - **Guard**: Servizio che controlla le **Policies** e decide se una richiesta è autorizzata o meno. È detto anche **Policy Decision Point**, che scrive tutto ciò che arriva negli **Audit Log**
 - **Policy**: Set di regole e requisiti che le richieste devono rispettare per accedere ad una risorsa protetta da essa
 - **Isolation Boundaries**: Sono i limiti di azioni di un **Guard**. All'interno dei *boundaries*, le richieste vengono filtrare dal **PDP**. Delimita l'**Access Control Module**
-- **Audit log**: Informazione riguardo ad una richiesta e risultato del filtro da parte del **Guard**, contenuto all'interno dell'**Access Control Module**
+- **Audit log**: Registro delle richieste e delle operazioni effettuate dal **Guard**, contenuto all'interno dell'**Access Control Module**
 
 ### Question 3
 
@@ -125,9 +125,9 @@ Define the notions of Confidentiality, Integrity, and Availability
 **CIA** è l'acronimo di:
 - **Confidenzialità**: Non dovrebbe permettere la divulgazione un'informazione privata
 - **Integrità**: Un'informazione non dovrebbe essere manomessa da entità non autorizzate
-- **Disponibilità**: Un'informazione dovrebbe essere sempre disponibile
+- **Disponibilità (Availability)**: Un'informazione dovrebbe essere sempre disponibile
 
-Sono tre principali pilastri fondanti dell\'**Information Security**.
+Sono tre pilastri fondanti dell\'**Information Security**.
 
 
 ## 24 Feb, 2023
@@ -163,18 +163,18 @@ Dove:
 - $E: K \times M \rightarrow C$
 - $D: K \times C \rightarrow M$
 
-Il **principio di Kerckhoffs** dice che non bisogna fidarsi della segretezza di un algoritmo per ottenere protezione; serve invece valutare la secretezza della chiave. 
+Il **principio di Kerckhoffs** dice che non bisogna fidarsi della segretezza di un algoritmo per ottenere protezione; serve invece valutare la segretezza della chiave. 
 L'algoritmo deve rendere un messaggio, se non matematicamente, almeno fisicamente impossibile da decifrare.
 
 Il **Key Management** è il processo di mantenimento di una chiave di cifratura, dalla sua creazione al suo utilizzo, alla distribuzione e alla sua distruzione.
-È importante per poter rispettare i principi di **Confidenzialità**, **Integrità** e **Disponibilità**
+La sua gestione è importante per poter rispettare i principi di **Confidenzialità**, **Integrità** e **Disponibilità**
 
 La **Cifratura Simmetrica** è un **Cryptosystem** tale che
-$D(k, E(k, m)) = m \space | \space m \in M, k \in K$, ovvero che la chiave è la stessa sia nella fase di cifratura che nella case di decifratura. Nonostante cioò, non è detto che gli algoritmi di cifratura $D$ ed $E$ siano gli stessi.
+$D(k, E(k, m)) = m \quad | \quad m \in M, k \in K$, ovvero che la chiave è la stessa sia nella fase di cifratura che nella case di decifratura. Nonostante ciò, non è detto che gli algoritmi di cifratura $D$ ed $E$ siano gli stessi.
 
 Al contrario, nella **Cifratura Asimmetrica**, le due chiavi di cifratura sono diverse, di cui una definita pubblica e l'altra privata. Una delle due chiavi è applicabile sulla funzione $D$, ovvero è la chiave di decifratura. L'altra, invece, sulla funzione $E$, detta chiave di cifratura. La chiave pubblica può essere diffusa pubblicamente, mentre la chiave privata deve essere mantenuta segreta dal titolare delle due chiavi.
 
-Per prevenire questi tipi di attachi, nella fattispecie **Ransomware**, è neccessario che un team di specialisti effettui delle continue metriche e test sull'infrastruttura ICT dell'azienda, in modo da ottenere informazioni riguardo falle e sistemi informatici con versioni datate. Se l'azienda avesse avuto delle **metrics** riguardanti le patch di sicurezza, avrebbe potuto evitare di contrarre attacchi simili.
+Per prevenire questi tipi di attachi è necessario che un team di specialisti effettui delle continue metriche e test sull'infrastruttura ICT dell'azienda, in modo da ottenere informazioni riguardo a falle e sistemi informatici con versioni datate. Se l'azienda, nel contesto descritto, avesse avuto delle **metriche** riguardanti le patch di sicurezza, avrebbe potuto evitare di contrarre attacchi simili.
 
 ### Question 2
 
@@ -189,22 +189,20 @@ Il **Diffie-Hellman key exchange** è un protocollo che permette a due dispositi
 
 Inizialmente i due capi della comunicazione scelgono:
 - $p$: un numero primo, il modulo dell'algoritmo
-- $g$: la base della potenza, detto **generatore**
+- $g$: la base della potenza, detta **generatore**
 
-Poi scelgono privatamente un numero, abbastanza grande da resistere ad attacchi di bruteforce. In seguito calcolano:
-
+Poi scelgono privatamente un numero, abbastanza grande da resistere ad attacchi di **bruteforce**. In seguito calcolano:
 $$ A = g^a\mod p $$
 $$ B = g^A\mod p $$
-
 $A$ e $B$ sono le corrispettive chiavi pubbliche, che possono procedere a scambiarsi. 
 
 Ora, per creare la **shared secret key**, basta che i due facciano:
 
 $$ K = g^{a*b}\mod p = B^a \mod p = A^b \mod p = g^{b*a} $$
 
-Lo scambio da solo non basta per fornire autenticazione, dunque serve associare un altro **security mechanism** per evitare vulnerabilità del tipo **Man in the Middle**.
+Lo scambio da solo non basta per fornire autenticazione, dunque serve associare un altro **security mechanism** per evitare vulnerabilità del tipo **Man-in-the-Middle**.
 
-Nel **Man in the Middle** un malintenzionato si pone in mezzo alla comunicazione tra due entità. Malintenzionato può vìolare l'integrità e la confidenzialità del messaggio. Dunque è bene applicare sistemi di autenticazione per risolvere questo tipo di vulnerabilità.
+Nel **Man-in-the-Middle**, un malintenzionato si pone in mezzo alla comunicazione tra due entità. Può violare l'integrità e la confidenzialità del messaggio. Dunque è bene applicare gli adeguati sistemi di autenticazione per risolvere questo tipo di vulnerabilità, come ad esempio il **TLS**.
 
 ### Question 3 
 
@@ -213,7 +211,7 @@ Define the notions of vulnerability and threat and give (at least) an example fo
 ***
 
 Una **vulnerabilità** è una falla all'interno di un sistema informatico, in una procedura o in un'implementazione, che può dar spazio ad **exploits** eseguiti da malintenzionati, detti **threats**.
-Le vunerabilità agiscono su diversi lati di un'infrastruttura:
+Le vulnerabilità agiscono su diversi lati di un'infrastruttura:
 - **Application Layer**: SQL Injection, XSS Scripting, Cross-Site Request Forgery
 - **Server Layer**: Denial-of-Service, OS Exploitation
 - **Network Layer**: Man-In-The-Middle, DSN Attack
@@ -234,10 +232,10 @@ L'**Attribute Based Access Control** è una tipologia di **Access Control** che 
 - **Environment attributes**: data attuale, situazione attuale di sicurezza (attività degli hacker)
 
 Queste **policies** possono confliggere tra loro, dunque si può procede in due maniere:
-- **Permit Overlay**: Si procede a concedere l'accesso, concede più libertà
+- **Permit Overlay**: Si procede a concedere l'accesso, più libertà
 - **Deny Overlay**: Si procede a bloccare l'accesso, più restrittivo
 
-**ABAC** sostituisce altri sistemi, come **RBAC**, perchè il controllo del solo ruolo può non essere abbastanza elastico per determinate sitazioni, dunque si aggiungono altri elementi su cui valutare l'accesso alle risorse.
+**ABAC** sostituisce altri sistemi più semplici, come **RBAC**, nelle situazioni in cui il controllo del solo ruolo può non essere abbastanza elastico. Dunque si aggiungono altri elementi su cui valutare l'accesso alle risorse.
 
 ## Jul 28, 2022
 
@@ -247,7 +245,9 @@ Queste **policies** possono confliggere tra loro, dunque si può procede in due 
 Define the notion of hash function and its main properties: (a) Ease of computation, (b) Compression, (c) One-way, (d) Weak collision resistance, and (e) Strong collision resistance.
 ***
 
-Una **funzione hash** è una **1-way function** che, dato un parametro di lunghezza variabile genera un **digest** di dimensione fissa. È detta **1-way** perchè deve essere facile da calcolare ma difficile computazionalmente da invertire. Dunque, le richieste di una funzione di **hash** sono:
+Una **funzione hash** è una **1-way function** che, dato un parametro di lunghezza variabile, genera un **digest** di dimensione fissa. È detta **1-way** perchè deve essere facile da calcolare ma difficile computazionalmente da invertire.
+
+Una buona funzione **hash** ha le seguenti caratteristiche:
 
 - **Facilità di computazione**: Data la funzione di **hash** $h$, calcolare $h(x)=y$ è computazionalmente molto facile
 - **Compressione**: Dato un parametro di lunghezza in bit variabile, la funzione $h$ genera un digest di lunghezza in bits fissa
@@ -262,7 +262,7 @@ Una **funzione hash** è una **1-way function** che, dato un parametro di lunghe
 Briefly describe the notion of Data Protection Impact Assessment (DPIA) according to the Art. 35 of the GDPR.
 ***
 
-L\'**articolo 35** del **GDPR** parla del **Data Protection Impact Assessment**, un documento che deve essere redatto da un'organizzazione prima di procedere a rendere attivo un servizio, dove descrive l'impatto che i dati che verranno raccolti hanno, come verranno processati e la criticità del sistema.
+L\'**articolo 35** del **GDPR** parla del **Data Protection Impact Assessment**, un documento che deve essere redatto da un'organizzazione prima di procedere a rendere attivo un servizio, dove descrive l'impatto che i dati che verranno raccolti, come verranno processati e la criticità del sistema.
 
 ### Question 3 
 
@@ -276,16 +276,16 @@ Explain the notion of Multi-level security by illustrating it with the Bell-La P
 ***
 
 Il **Multi-level Security** è un sistema che etichetta le risorse con un **Sensitivity Label** $L = (S,N)$, dove:
-- $S$ è un set ordinato di priorità, come $\text{TopSecret} \ge \text{Secret} \ge \text{Confidential} \ge \text{Unclassified}$
-- $N$ è un set non ordinato di topics detto **need-to-know**, ovvero che dovrebbero essere collegate solo a gruppi di utenti. Ad esempio $\text{Crypto, Nuclear, Janitorial, ...}$
+- $S$ è un **set ordinato di priorità**, come $\text{TopSecret} \ge \text{Secret} \ge \text{Confidential} \ge \text{Unclassified}$
+- $N$ è un **set non ordinato di topics** detto **need-to-know**, ovvero categorie che dovrebbero essere collegate solo a specifici gruppi di utenti. Ad esempio $\text{Crypto, Nuclear, Janitorial, ...}$
 
-Alla creazione, ogni risorsa è associata alla combinazione di due elementi di $S$ e $N$.
+Nella fase di creazione, ogni risorsa è associata alla combinazione di due elementi di $S$ e $N$.
 
 Ad ogni utente è associato un **livello di autorizzazione** detto **clearence**, $C: (S,N)$, dove $S$ è il livello massimo di **Security Level** che può raggiungere, mentre $N$ è un set di categorie **need-to-know** a cui l'utente è interessato ad operare.
 
 Per le **Access Control Policies**:
 - se l'utente chiede di leggere applica il **no read up property**, la **Sensitivity** dell'utente deve dominare la **Sensitivity** di una risorsa.
-- se l'utente chiede di scrivere applica il **no write up property**, la **Sensitivity** dell'utente deve dominare la **Sensitivity** di una risorsa.
+- se l'utente chiede di scrivere applica il **no write up property**, l'insieme dei **need-to-know** dell'utente deve contenere i **topics** di una risorsa.
 
 Date due **Sensitivity** $L_1=(S_1, N_1)$ e $L_2=(S_2, N_2)$, $L_1$ **domina** $L_2$ se:
 $$ S_1 \ge S_2 \quad N_1 \subseteq N_2 $$
@@ -298,7 +298,7 @@ $$ S_1 \ge S_2 \quad N_1 \subseteq N_2 $$
 Describe an SQL injection attack. Which are the main mitigations to an SQL injection attack?
 ***
 
-Gli attacchi **SQL Injection** sfruttano la mancante o non sufficiente **sanificazione** degli input di un form. Inserendo delle porzioni di testo specifiche possono modificare il comportamento di una **query**. In questo modo, malintenzionati possono andare ad ottenere informazioni non raggiungibili normalmente all'interno del database oppure andando a minare l'integrità dei dati al suo interno, modificandoli o eliminandoli.
+Gli attacchi **SQL Injection** sfruttano la mancante o non sufficiente **sanificazione** degli input di un form. Inserendo delle porzioni di testo specifiche, il **DBMS** può modificare il comportamento di una **query**. In questo modo, malintenzionati possono andare ad ottenere informazioni non raggiungibili normalmente all'interno del database oppure andare a minare l'integrità dei dati al suo interno, modificandoli o eliminandoli.
 
 Alcuni modi con cui è possibile evitare questa vulnerabilità sono:
 - Sanificare tutti gli input forniti dall'utente
@@ -328,13 +328,13 @@ In the context of access control, explain:
 - discuss the main advantages and disadvantages between DAC and MAC.
 ***
 
-Il **Confused Deputy** è un sistema di **Priviledge Escalation**, dove una avversario senza il permesso di accedere ad una risorsa sensibile, scrive nella risorsa mediante un altro soggetto (detto **Deputy**). 
+Il **Confused Deputy** è un sistema di **Priviledge Escalation**, dove una avversario senza il permesso di accedere ad una risorsa, scrive nella risorsa mediante un altro soggetto (detto **Deputy**). 
 Il sistema, non conoscendo da chi derivano i permessi, utilizza quelli di entrambi (**Permit overlay**).
 
 In questo caso, le **capabilities** non soffrono di questo problema, dato che i permessi sono **esplicitamente** scritti e non può esserci confusione nel capire se un utente passa una **capability** ad un altro utente o servizio.
 
-Il **Discretionary Access Control**, o **DAC**, è un sistema in cui un soggetto può conferire i propri permessi ad un altro soggetto, ad esempio un eseguibile.
-Al contrario, nel **Mandatory Access Control**, o **MAC**, solo gli amministratori possono modificare, rimuovere o fornire ulteriori accessi agli utenti.
+Il **Discretionary Access Control** (o **DAC**) è un sistema in cui un soggetto può conferire i propri permessi ad un altro soggetto, ad esempio un eseguibile.
+Al contrario, nel **Mandatory Access Control** (o **MAC**) solo gli amministratori possono modificare, rimuovere o fornire ulteriori accessi agli utenti.
 
 Nel **Discretionary Access Control**, gli utenti sono posti in dei **gruppi**, per avere più facilitù nell'archiviare i permessi degli utenti, soprattutto nelle grosse organizzazioni. Il sistema è flessibile, ma può risultare **vulnerabile** a **trojan** e **inconsistente**.
 Nel **Mandatory Access Control**, l'utente è associato ad un'organizzaione, che decide come i dati possono essere condivisi. Le risorse, solitamente, sono etichettate da delle **Security Labels**.
@@ -353,11 +353,11 @@ Explain how to protect a password file with hashing and salting; discuss
 - explain if salts can be stored in clear
 ***
 
-L\'**hashing** è il modo con cui, dato un parametro di lunghezza variabile, si ottiene un valore di lunghezza variabile, detto **digest**. È largamente usato per il salvataggio non occulto di password e per il controllo dell'integrità di file e oggetti. Dunque, per nascondere le password all'interno di un **password file** basta registrare, al posto della **password**, il suo **digest**. Poi, ogni volta che un utente prova ad effettuare il login, basterà calcolare l\'**hash** della **password** data in input e verificare che sia lo stesso.
+L\'**hashing** è l'applicazione di una funzione con cui, dato un parametro di lunghezza variabile, si ottiene un valore di lunghezza variabile, detto **digest**. È largamente usato per il salvataggio non occulto di password e per il controllo dell'integrità di file e oggetti. Dunque, per nascondere le password all'interno di un **password file** basta registrare, al posto della **password**, il suo **digest**. Poi, ogni volta che un utente prova ad effettuare il login, basterà calcolare allo stesso modo l\'**hash** della **password** data in input e verificare che sia lo stesso.
 
-Una delle particolarità dell'hashing è che, dato una password $x$, la funzione di hash $h$, ogni volta che si calcolerà $h(x)$, restituirà lo stesso **digest**. Per questo, una volta trovato l\'**hash** corrispondente ad una determinata **password**, è possibile confrontarla con la lista di tutti gli utenti e verificare facilmente chi ha la stessa **password**. Ciò si applica principalmente su password molto facili o banali. Esistono delle speciali liste di **hash**, dette **Rainbow Tables**, che contengono i digest delle **password** più utilizzate, che rendono molto facile il lavoro a malintenzionati che cercano di rompere **password file**.
+Una delle particolarità dell'hashing è che, dato una password $x$ e la funzione di hash $h$, ogni volta che si calcolerà $h(x)$, restituirà lo stesso **digest**. Per questo, una volta trovato l\'**hash** corrispondente ad una determinata **password**, è possibile confrontarla con la lista di tutti gli utenti e verificare facilmente chi ha la stessa **password**. Ciò si applica principalmente su password molto facili o banali. Esistono delle speciali liste di **hash**, dette **Rainbow Tables**, che contengono i digest delle **password** più utilizzate, che rendono molto facile il lavoro a malintenzionati che cercano di rompere un **password file**.
 
-Un modo per evitare questo problema è concatenare alla **password** un cosiddetto **salt**, una stringa pseudocasuale, facendo si che due utenti aventi la stessa password calcolino un **digest** diverso. Il **salt** deve essere associato all'utente e può rimanere non cifrato all'interno del password file, dato che un hacker in conscenza della stringa dovrebbe ricalcolarsi tutte le combinazioni mediante **bruteforce**.
+Un modo per evitare questo problema è concatenare alla **password** un cosiddetto **salt**, una stringa pseudocasuale. Così facendo, due utenti aventi la stessa password, hanno il **digest** diverso. Il **salt** deve essere associato all'utente e può rimanere non cifrato all'interno del password file, dato che un hacker in conoscenza della stringa dovrebbe ricalcolarsi tutte le combinazioni mediante **bruteforce**.
 
 ### Question 3
 
@@ -372,20 +372,20 @@ In the context of the SAML standard
 Il **Security Assertion Markup Language** è uno standard che permette a due sistemi di autenticarsi e ad autorizzarsi mutualmente, in particolare nel caso degli **Identity Provider** e dei **Service Provider**.
 È basato su **XML** ed ha lo scopo di contenere delle **Security Assertions**.
 
-Viene largamente usato nel **Single Sign On**, un sistema in cui, con un unico profilo fornito dall\'**Identity Provider** viene effettuato l'accesso con diversi **Service Provider**.
+Viene largamente usato nel **Single Sign On**, un sistema in cui, con un unico profilo fornito dall\'**Identity Provider**, viene effettuato l'accesso con diversi **Service Provider**.
 
 Il **Single Sign On** può essere inizializzato in due diverse maniere:
 - Dall\'**Identity Provider**, che dopo aver autenticato l'utente, lo indirizza sulla piattaforma dell **Service Provider**, consegnandoli un certificato **SAML** contentenente gli **assertions** appartenente a quel sito (es. la tipologia di membership)
 - Dall\'**Service Provider**, che dopo aver dato all'utente l'accesso a delle risorse senza vincoli di autorizzazione, procede a richiedere all'**Identity Provider** che esso venga autenticato. Una volta che l\'**Identity Provider** ha verificato l'identità dell'utente, lo reindirizza dal **Service Provider** con le **assertions** dell'utente. 
 
-Si suppone in entrambi i casi che sia già stata creata una **federazione** tra i due **provider**, dunque che sia stata instaurata precedentemente fiducia tra di loro.
+Si suppone in entrambi i casi che sia già stata creata una **federazione** tra i due **provider**, dunque che sia stata instaurata precedentemente **fiducia** tra di loro.
 
-Per stabilire un rapporto di fiducia tra le due parti, il certificato contiene dei **Metadata** riguardanti l'identità di chi lo ha distribuito. Alcuni parametri sono i seguenti:
+Per stabilire la corretta distribuzione delle **assertions**, il certificato contiene dei **Metadata** riguardanti l'identità di chi lo ha distribuito. Alcuni parametri sono i seguenti:
 - **EntityId**
 - **Chiavi crittografiche**, permettono di firmare digitalmente il file dall'emittente
 - **Protocol Endpoints**, per la comunicazione e la verifica delle informazioni
 
-Da solo **SAML** non permette di garantire che la trasmissione del file avvenga con confidenzialità e in modo integro. Dunque è consigliato appoggiarsi su sistemi come il **TLS** per ottenere i requisiti mancanti ad una comunicazione sicura.
+Da solo, **SAML** non permette di garantire che la trasmissione del file avvenga con confidenzialità e in modo integro. Dunque è consigliato appoggiarsi su sistemi come il **TLS** per ottenere una comunicazione sicura.
 
 ### Question 4 
 
@@ -393,9 +393,9 @@ Da solo **SAML** non permette di garantire che la trasmissione del file avvenga 
 Explain the notion of pseudo anonymization function, describe at least two possible implementations together with their advantages and disadvantages.
 ***
 
-Una **funzione di pseudoanonimizzazione** produce un identità pseudocasuale applicabile ad un'identità, in modo da poter evitare di associare un informazione ad un'entità in chiaro. Ciò permette di garantire la privacy e di evitare **Linkage Attaks**.
+Una **funzione di pseudoanonimizzazione** produce un identità pseudocasuale applicabile ad un'identità, in modo da poter evitare di associare un informazione ad un'entità in chiaro. Ciò permette di garantire la privacy e di evitare **Linkage Attacks**.
 Ci sono diverse possibili implementazioni di questa funzione:
-- Un **Counter** che cresce in maniera incrementale man mano che viene associato un numero ad un'entità
-- Un **Pseudo Random Number Generator**, che fornisce un numero pseudo casuale unico all'utente. È molto difficile da implementare ma è più flessibile del **Counter**
+- Un **Counter**, che cresce in maniera incrementale man mano che viene associato un numero ad un'entità
+- Uno **Pseudo Random Number Generator**, che fornisce un numero pseudo casuale unico all'utente. È molto difficile da implementare ma è più flessibile del **Counter**
 
 
