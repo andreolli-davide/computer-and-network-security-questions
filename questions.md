@@ -75,9 +75,9 @@ I due tipi principali di **XSS** sono:
 > 4. Which encryption primitive would you suggest adopting by the LastHope server to encipher the credentials in each user database? Motivate your answer.
 
 Ritengo che il sistema che il servizio **LastHope** usa per criptare le password sia fallaceo. 
-L'utilizzo del solo username per effettuare il **salting** dell\'**hash** della **encryption key** fa sì che se un utente avesse la stessa password per più servizi distinti, allora produrrebbe lo stesso **cypher text**. Dunque un malintenzionato, dopo aver avuto l'accesso ai record di un database, potrebbe vedere ad occhio nudo quali utenti utilizzano la stessa password per più servizi. Può usare questa informazione per effettuare degli attacchi mirati ed aumentare l'efficacia della ricerca di password. 
+L'utilizzo del solo username per effettuare il **salting** dell\'**hash** della **encryption key** fa sì che se un utente avesse la stessa password per più servizi distinti, allora produrrebbe lo stesso **cypher text**. Dunque un malintenzionato, dopo aver ottenuto l'accesso ai record di un database, potrebbe vedere ad occhio nudo quali utenti utilizzano la stessa password per più servizi. Può usare questa informazione per effettuare degli attacchi mirati ed aumentare l'efficacia della ricerca di password. 
 
-Una soluzione possibile è concatenare anche un identificativo univoco del servizio per il quale si sta salvando la password. Di conseguenza, si otterrebbe un\'**encryption key** per ogni password salvata. Risolve il problema riscontrato e non aggiunge *overhead* all'infrastruttura. 
+Una soluzione possibile è concatenare anche un identificativo univoco del servizio per il quale si sta salvando la password. Di conseguenza, si otterrebbe un\'**encryption key** diversa per ogni password salvata. Risolve il problema riscontrato e non aggiunge *overhead* all'infrastruttura. 
 
 Inoltre, il sistema dell\'**authentication digest** lo ritengo fortemente debole in quanto permanente (fino a che non viene cambiata la master password). Dunque non ha scadenza e non può essere revocato senza bloccare l'intero accesso alle password per l'utente. È opportuno che **LastHope** implementi un nuovo sistema di autenticazione, magari utilizzando la **master password** per validare l'accesso e fornire poi all'utente un **token** non dipendente dalla password principale. 
 
@@ -221,7 +221,12 @@ Queste **policies** possono confliggere tra loro, dunque si può procede in due 
 
 ### Question 1
 
-> Define the notion of hash function and its main properties: (a) Ease of computation, (b) Compression, (c) One-way, (d) Weak collision resistance, and (e) Strong collision resistance.
+> Define the notion of hash function and its main properties: 
+> - Ease of computation 
+> - Compression 
+> - One-way 
+> - Weak collision resistance 
+> - Strong collision resistance.
 
 Una **funzione hash** è una **1-way function** che, dato un parametro di lunghezza variabile, genera un **digest** di dimensione fissa. È detta **1-way** perchè deve essere facile da calcolare ma difficile computazionalmente da invertire.
 
@@ -233,12 +238,6 @@ Una buona funzione **hash** ha le seguenti caratteristiche:
 - **Weak Collision Resistance**: Noti $x_1$ e $h(x_1)$, è computazionalmente arduo trovare un altro $x_2$ tale che $x_1 \neq x_2$ e $h(x_1) = h(x_2)$
 - **Strong Collision Resistance**: Deve essere arduo computazionalmente trovare dei valori $x_1$ e $x_2$, tali che $x_1 \neq x_2$ e $h(x_1) = h(x_2)$ 
 - **Effetto Cascata**. Una buona funzione **hash**, anche ad una minima variazione del parametro $x$, cambia molto il valore di $y$
-
-### Question 4 
-
-> Briefly describe the notion of Data Protection Impact Assessment (DPIA) according to the Art. 35 of the GDPR.
-
-L\'**articolo 35** del **GDPR** parla del **Data Protection Impact Assessment**, un documento che deve essere redatto da un'organizzazione prima di procedere a rendere attivo un servizio, dove descrive l'impatto che i dati che verranno raccolti, come verranno processati e la criticità del sistema.
 
 ### Question 3 
 
@@ -257,12 +256,17 @@ Nella fase di creazione, ogni risorsa è associata alla combinazione di due elem
 
 Ad ogni utente è associato un **livello di autorizzazione** detto **clearence**, $C: (S,N)$, dove $S$ è il livello massimo di **Security Level** che può raggiungere, mentre $N$ è un set di categorie **need-to-know** a cui l'utente è interessato ad operare.
 
-Per le **Access Control Policies**:
-- se l'utente chiede di leggere applica il **no read up property**, la **Sensitivity** dell'utente deve dominare la **Sensitivity** di una risorsa.
-- se l'utente chiede di scrivere applica il **no write up property**, l'insieme dei **need-to-know** dell'utente deve contenere i **topics** di una risorsa.
+Seguendo il **Modello di *Bell-La Padula***, applichiamo:
+- **No Read-Up Property**: una risorsa è accessibile solo se i permessi del soggetto richiedente sono maggiori o uguali a queli della risorsa richiesta
+- **No Write-Down Property**: i permessi di una risorsa, per essere scritta, deve dominare i permessi del soggetto richiedente.
 
-Date due **Sensitivity** $L_1=(S_1, N_1)$ e $L_2=(S_2, N_2)$, $L_1$ **domina** $L_2$ se:
-$$ S_1 \ge S_2 \quad N_1 \subseteq N_2 $$
+Il precedente modello punta a conservare la confidenzialità delle risorse a discapito, però, dell'integrità di esse.
+
+### Question 4 
+
+> Briefly describe the notion of Data Protection Impact Assessment (DPIA) according to the Art. 35 of the GDPR.
+
+L\'**articolo 35** del **GDPR** parla del **Data Protection Impact Assessment**, un documento che deve essere redatto da un'organizzazione prima di procedere a rendere attivo un servizio, dove descrive l'impatto che i dati che verranno raccolti, come verranno processati e la criticità del sistema.
 
 ## Jun 23, 2022
 
@@ -301,11 +305,11 @@ Il sistema, non conoscendo da chi derivano i permessi, utilizza quelli di entram
 
 In questo caso, le **capabilities** non soffrono di questo problema, dato che i permessi sono **esplicitamente** scritti e non può esserci confusione nel capire se un utente passa una **capability** ad un altro utente o servizio.
 
-Il **Discretionary Access Control** (o **DAC**) è un sistema in cui un soggetto può conferire i propri permessi ad un altro soggetto, ad esempio un eseguibile.
+Il **Discretionary Access Control** (o **DAC**) è un sistema in cui un soggetto può conferire i propri permessi ad un altro soggetto, ad esempio un eseguibile. 
 Al contrario, nel **Mandatory Access Control** (o **MAC**) solo gli amministratori possono modificare, rimuovere o fornire ulteriori accessi agli utenti.
 
-Nel **Discretionary Access Control**, gli utenti sono posti in dei **gruppi**, per avere più facilitù nell'archiviare i permessi degli utenti, soprattutto nelle grosse organizzazioni. Il sistema è flessibile, ma può risultare **vulnerabile** a **trojan** e **inconsistente**.
-Nel **Mandatory Access Control**, l'utente è associato ad un'organizzaione, che decide come i dati possono essere condivisi. Le risorse, solitamente, sono etichettate da delle **Security Labels**.
+Nel **Discretionary Access Control**, gli utenti sono posti in dei **gruppi**, per avere più facilità nell'archiviare i permessi degli utenti (**ACL** e **AC Matrix** di minor dimensione) soprattutto nelle grosse organizzazioni. Il sistema è flessibile, ma può risultare **vulnerabile** a **trojan** ed essere **inconsistente**.
+Nel **Mandatory Access Control**, l'utente è associato ad un'organizzazione, che decide come i dati possono essere condivisi. Le risorse, solitamente, sono etichettate da delle **Security Labels**.
 
 
 ## Feb 1, 2022
