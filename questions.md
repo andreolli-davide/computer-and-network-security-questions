@@ -13,11 +13,11 @@ Made by [Davide Andreolli](https://rroll.to/sOPjVJ)
 briefly describing each step 
 > - how TLS ensures authentication, confidentiality, and integrity
 
-Un certificato digitale è un file che certifica il binding tra un identità e la propria public key. Ciò permette di poter comunicare con un'altra entità con certezza della sua identità, utilizzando la **PKI** per evitare attacchi **Man-In-The-Middle**.
+Un certificato digitale è un file che certifica il binding tra un'entità e la propria public key. Ciò permette di poter comunicare con un'altra entità con certezza della sua identità, utilizzando la **PKI** per evitare attacchi **Man-In-The-Middle**.
 
 Il certificato è firmato da un **Certification Authority**, che attesta la correttezza e l'integrità del documento rilasciato. Per verificare che anche il **Certification Authority** sia autentico, si procede ricorsivamente a validare anche i certificati dei **CA**, fino a trovare un **root-CA**. I **root-CA** sono dei speciali **CA** le quali public keys sono *hard-codate* nella memoria dei dispositivi. Ciò può essere, però, vulnerabile ad aggiornamenti malevoli di sistema, che potrebbero manomettere i certificati dei **root-CA** e **bypassare** l'intera infrastruttura dei certificati digitali.
 
-Un'entità, per ottenere un proprio certificato digitale, deve riferirsi ad un **Registration Authority**, che si occupa di validare l'identità del richiedente. Se il risultato della validazione è positiva, l\'**RA** richiede al **CA** di fornire all'entità il nuovo certificato, fornendo i dati riguardo l'identità di essa. Tutti i certificati firmati dal **CA** sono poi inviati ai **Validation Authorities**, che forniscono le informazioni riguardo al certificato per conto del **CA**.
+Un'entità, per ottenere un proprio certificato digitale, deve riferirsi ad un **Registration Authority**, che si occupa di validare l'identità del richiedente. Se il risultato della validazione è positiva, l\'**RA** richiede al **CA** di fornire all'entità il nuovo certificato, fornendo i dati riguardo l'identità di essa. I **Validation Authorities** si occupano di confermare la validità di un certificato, controllando la presenza di revoche nella **CRL** e controllando le firme dei **CA**. Solitamente, il ruolo di **VA** lo svolge il browser.
 
 Uno dei protocolli che implementa l'utilizzo dei certificati digitali è il **TLS**. Il **TLS** utilizza il **PKI** per permettere ai due capi della comunicazione di generare una **shared secret key** e criptare la sessione. 
 
@@ -39,18 +39,18 @@ Il **TLS** permette di assicurare, con un unico protocollo, che vengano rispetta
 > - Explain the trade-off between anonymity and utility in the context of realizing data sets
 
 **Privacy** è una parola che può avere diversi significati, che variano in base al contesto.
-**Privacy** può essere intesa come l'abilità di un utente di controllare il possesso e l'utilizzo dei propri dati personali nei confronti di un'organizzazione. Oppure **Privacy** può essere l'anonimità delle azioni che vengono svolte su una determinata piattaforma.
+**Privacy** può essere intesa come il diritto di un utente di controllare il possesso e l'utilizzo dei propri dati personali da parte di un'organizzazione. Oppure **Privacy** può essere l'anonimità delle azioni che vengono svolte su una determinata piattaforma.
 
-I **linkage attack** uniscono più database distinti, confrontandone gli attributi comuni. Utilizzano i cosiddetti **Quasi Identifiers**, ovvero attributi non univoci che permettono di avere una sufficiente correlazione con l'utente ma che, messi a confronto con altri **Quasi Identifiers**, permettono di distinguere un'entità univocamente.
+I **linkage attack** uniscono più database distinti, confrontandone gli attributi comuni. Utilizzano i cosiddetti **Quasi Identifiers**, degli attributi non univoci che permettono di avere una sufficiente correlazione con l'utente ma che, messi a confronto con altri **Quasi Identifiers**, permettono di distinguere un'entità univocamente.
 L'utilizzo di un **Quasi Identifier** è sbagliato tanto quanto utilizzare l'intera identità dell'utente, ma a volta si pone necessario inserirlo per questioni di sicurezza o per effettuare degli studi su *dataset* che lo riguardano.
 
-Per questo un buon *tradeoff* può essere l'utilizzo della **K-anonimity**, un sistema che permette di generalizzare il contenuto del **Quasi Identifier** senza avere un'eccessiva perdita di dati. Il principio è che un record deve essere non identificabile tra almeno $k-1$ altri record.
+Una soluzione che pone un *tradeoff* tra privacy dei dati e capacità di effettuare analisi sul contenuto di essi può essere l'utilizzo della **K-anonimity**, un sistema che permette di generalizzare il contenuto del **Quasi Identifier** senza avere un'eccessiva perdita di dati. Il principio è che un record deve essere non identificabile tra almeno $k-1$ altri record.
 
 ### Question 3
 
 > Describe a Cross-Site Scripting attack and the main mitigations that can be used to prevent it
 
-Il **Cross-Site Scripting** è una vulnerabilità a livello applicazione che permette di eseguire codice malevolo sul browser dell'utente attaccato. Ciò è causato dal codice del sito, che non effetta adeguati filtri sui parametri inviati dai client, che possono iniettare tag **HTML** oppure codice **JavaScript** all'interno di form oppure all'interno di un\'**URL**.
+Il **Cross-Site Scripting** è una vulnerabilità a livello applicazione che permette di eseguire codice malevolo sul browser dell'utente attaccato. Ciò è causato dalla mancanza di filtri adeguati sui parametri inviati dai client da parte della pagina web, che possono iniettare tag **HTML** oppure codice **JavaScript** all'interno di form oppure all'interno di un\'**URL**.
 È utilizzato principalmente per il furto di chiavi di sessione e di informazioni private salvate nel browser dell'utente. Può anche indirizzare l'utente su siti di **phishing** per sottoporlo ad altri tipi di **vulnerabilità**.
 
 I due tipi principali di **XSS** sono:
@@ -75,9 +75,9 @@ I due tipi principali di **XSS** sono:
 > 4. Which encryption primitive would you suggest adopting by the LastHope server to encipher the credentials in each user database? Motivate your answer.
 
 Ritengo che il sistema che il servizio **LastHope** usa per criptare le password sia fallaceo. 
-L'utilizzo del solo username per effettuare il **salting** dell\'**hash** della **encryption key** fa sì che se un utente avesse la stessa password per più servizi distinti, allora produrrebbe lo stesso **cypher text**. Dunque un malintenzionato, dopo aver ottenuto l'accesso ai record di un database, potrebbe vedere ad occhio nudo quali utenti utilizzano la stessa password per più servizi. Può usare questa informazione per effettuare degli attacchi mirati ed aumentare l'efficacia della ricerca di password. 
+L'utilizzo del solo username per effettuare il **salting** dell\'**hash** della **encryption key** fa sì che se un utente avesse la stessa password per più servizi distinti, allora produrrebbe lo stesso **cypher text**. Dunque un malintenzionato, dopo aver ottenuto l'accesso ai record di un database, avrebbe la possibilità vedere ad occhio nudo quali utenti utilizzano la stessa password per più servizi. Può usare questa informazione per effettuare degli attacchi mirati ed aumentare l'efficacia della ricerca di password mediante *bruteforce* o tecniche analoghe. 
 
-Una soluzione possibile è concatenare anche un identificativo univoco del servizio per il quale si sta salvando la password. Di conseguenza, si otterrebbe un\'**encryption key** diversa per ogni password salvata. Risolve il problema riscontrato e non aggiunge *overhead* all'infrastruttura. 
+Una soluzione possibile è concatenare alla password e l'username anche un identificativo univoco del servizio per il quale si sta salvando la password. Di conseguenza, si otterrebbe un\'**encryption key** diversa per ogni password salvata. Risolve il problema riscontrato e non aggiunge *overhead* all'infrastruttura. 
 
 Inoltre, il sistema dell\'**authentication digest** lo ritengo fortemente debole in quanto permanente (fino a che non viene cambiata la master password). Dunque non ha scadenza e non può essere revocato senza bloccare l'intero accesso alle password per l'utente. È opportuno che **LastHope** implementi un nuovo sistema di autenticazione, magari utilizzando la **master password** per validare l'accesso e fornire poi all'utente un **token** non dipendente dalla password principale. 
 
@@ -101,9 +101,9 @@ L\'**Access Control** è il processo che permette di garantire o negare l'access
 La sua architettura è composta da:
 - **Soggetto**: L'entità che effettua la richiesta
 - **Request**: La richiesta di accesso ad una risorsa
-- **Guard**: Servizio che controlla le **Policies** e decide se una richiesta è autorizzata o meno. È detto anche **Policy Decision Point**, che scrive tutto ciò che arriva negli **Audit Log**
+- **Guard**: Servizio che controlla le **Policies** e decide se una richiesta è autorizzata o meno. È detto anche **Policy Decision Point** e si occupa di aggiungere informazioni negli **Audit Log** riguardo agli eventi riscontrati
 - **Policy**: Set di regole e requisiti che le richieste devono rispettare per accedere ad una risorsa protetta da essa
-- **Isolation Boundaries**: Sono i limiti di azioni di un **Guard**. All'interno dei *boundaries*, le richieste vengono filtrare dal **PDP**. Delimita l'**Access Control Module**
+- **Isolation Boundaries**: È l'area di competenza di un **Guard**, dove risiedono tutte le risorse soggette alle decisioni di esso. All'interno dei *boundaries*, le richieste vengono filtrate dal **PDP**. Delimita l'**Access Control Module**
 - **Audit log**: Registro delle richieste e delle operazioni effettuate dal **Guard**, contenuto all'interno dell'**Access Control Module**
 
 ### Question 3
@@ -156,7 +156,8 @@ Il **Key Management** è il processo di mantenimento di una chiave di cifratura,
 La sua gestione è importante per poter rispettare i principi di **Confidenzialità**, **Integrità** e **Disponibilità**
 
 La **Cifratura Simmetrica** è un **Cryptosystem** tale che
-$D(k, E(k, m)) = m \quad | \quad m \in M, k \in K$, ovvero che la chiave è la stessa sia nella fase di cifratura che nella case di decifratura. Nonostante ciò, non è detto che gli algoritmi di cifratura $D$ ed $E$ siano gli stessi.
+$D(k, E(k, m)) = m \quad | \quad m \in M, k \in K$, 
+ovvero che la chiave è la stessa sia nella fase di cifratura che nella case di decifratura. Nonostante ciò, non è detto che gli algoritmi di cifratura $D$ ed $E$ siano gli stessi.
 
 Al contrario, nella **Cifratura Asimmetrica**, le due chiavi di cifratura sono diverse, di cui una definita pubblica e l'altra privata. Una delle due chiavi è applicabile sulla funzione $D$, ovvero è la chiave di decifratura. L'altra, invece, sulla funzione $E$, detta chiave di cifratura. La chiave pubblica può essere diffusa pubblicamente, mentre la chiave privata deve essere mantenuta segreta dal titolare delle due chiavi.
 
@@ -180,19 +181,19 @@ $$ A = g^a\mod p $$
 $$ B = g^A\mod p $$
 $A$ e $B$ sono le corrispettive chiavi pubbliche, che possono procedere a scambiarsi. 
 
-Ora, per creare la **shared secret key**, basta che i due facciano:
+Ora, per creare la **shared secret key** $K$, basta che i due svolgano:
 
-$$ K = g^{a*b}\mod p = B^a \mod p = A^b \mod p = g^{b*a} $$
+$$ K = g^{a*b}\mod p = B^a \mod p = A^b \mod p = g^{b*a} \mod p $$
 
 Lo scambio da solo non basta per fornire autenticazione, dunque serve associare un altro **security mechanism** per evitare vulnerabilità del tipo **Man-in-the-Middle**.
 
-Nel **Man-in-the-Middle**, un malintenzionato si pone in mezzo alla comunicazione tra due entità. Può violare l'integrità e la confidenzialità del messaggio. Dunque è bene applicare gli adeguati sistemi di autenticazione per risolvere questo tipo di vulnerabilità, come ad esempio il **TLS**.
+Nel **Man-in-the-Middle**, un malintenzionato si pone in mezzo alla comunicazione tra due entità. Può violare l'integrità e la confidenzialità del messaggio. Dunque è bene applicare gli adeguati sistemi di autenticazione per risolvere questo tipo di vulnerabilità, ad esempio mediante l'utilizzo di sistemi a cifratura asimmetrica o all'implementazione di protocolli come il **TLS**.
 
 ### Question 3 
 
 > Define the notions of vulnerability and threat and give (at least) an example for each one.
 
-Una **vulnerabilità** è una falla all'interno di un sistema informatico, in una procedura o in un'implementazione, che può dar spazio ad **exploits** eseguiti da malintenzionati, detti **threats**.
+Una **vulnerabilità** è una falla all'interno di un sistema informatico, in una rete o in un processo aziendale che può dar spazio ad **exploits** eseguiti da malintenzionati, detti **threats**.
 Le vulnerabilità agiscono su diversi lati di un'infrastruttura:
 - **Application Layer**: SQL Injection, XSS Scripting, Cross-Site Request Forgery
 - **Server Layer**: Denial-of-Service, OS Exploitation
@@ -207,9 +208,9 @@ Le vulnerabilità agiscono su diversi lati di un'infrastruttura:
 > Explain the framework of Attribute Based Access Control (ABAC), in particular how an access request is processed, and the reasons for which it has been introduced with respect to previous models (such as RBAC).
 
 L'**Attribute Based Access Control** è una tipologia di **Access Control** che concede l'autorizzazione in base a 3 principali attributi:
-- **User attributes**: nome, organizzazione, età
-- **Resource attributes**: titolo, autore, dimensione
-- **Environment attributes**: data attuale, situazione attuale di sicurezza (attività degli hacker)
+- **User attributes**: nome, organizzazione, età, ...
+- **Resource attributes**: titolo, autore, dimensione, ...
+- **Environment attributes**: data attuale, geolocalizzazione, situazione attuale di sicurezza (attività degli hacker), ...
 
 Queste **policies** possono confliggere tra loro, dunque si può procede in due maniere:
 - **Permit Overlay**: Si procede a concedere l'accesso, più libertà
@@ -228,7 +229,7 @@ Queste **policies** possono confliggere tra loro, dunque si può procede in due 
 > - Weak collision resistance 
 > - Strong collision resistance.
 
-Una **funzione hash** è una **1-way function** che, dato un parametro di lunghezza variabile, genera un **digest** di dimensione fissa. È detta **1-way** perchè deve essere facile da calcolare ma difficile computazionalmente da invertire.
+Una **funzione hash** è una **1-way function** che, dato un parametro di lunghezza variabile, genera un **digest** di dimensione fissa. È detta **1-way** perchè deve essere facile da calcolare (i.e. usando moltiplicazioni e potenze) ma difficile computazionalmente da invertire (logaritmi e fattorizzazioni).
 
 Una buona funzione **hash** ha le seguenti caratteristiche:
 
@@ -274,7 +275,7 @@ L\'**articolo 35** del **GDPR** parla del **Data Protection Impact Assessment**,
 
 > Describe an SQL injection attack. Which are the main mitigations to an SQL injection attack?
 
-Gli attacchi **SQL Injection** sfruttano la mancante o non sufficiente **sanificazione** degli input di un form. Inserendo delle porzioni di testo specifiche, il **DBMS** può modificare il comportamento di una **query**. In questo modo, malintenzionati possono andare ad ottenere informazioni non raggiungibili normalmente all'interno del database oppure andare a minare l'integrità dei dati al suo interno, modificandoli o eliminandoli.
+Gli attacchi **SQL Injection** sfruttano la mancante o non sufficiente **sanificazione** degli input di un form. Specifiche soluzioni di questa tipologia di vulnerabilità possono indurre il **DBMS** a modificare il comportamento della **query** prevista. In questo modo, malintenzionati possono andare ad ottenere informazioni non raggiungibili normalmente all'interno del database oppure andare a minare l'integrità dei dati al suo interno, modificandoli o eliminandoli.
 
 Alcuni modi con cui è possibile evitare questa vulnerabilità sono:
 - Sanificare tutti gli input forniti dall'utente
@@ -286,7 +287,7 @@ Alcuni modi con cui è possibile evitare questa vulnerabilità sono:
 > Define the notions of risk and vulnerability and give (at least) an example for each one.
 
 Il **rischio** è la probabilità che un **exploit** venga utilizzato da un **threat** (o **hacker**). Il fattore di rischio può essere dettato dall'importanza di una risorsa e il danno che può causare se alterata o pubblicata.
-Una vulnerabilità è una **debolezza** di un sistema informatico, causato da un errore di implementazione, un errore logico, un errore del sistema di sicurezza, etc. che può essere usato da un malintenzionato per minare l'attività di un servizio. Una vulnerabilità può essere classificata in base all'impatto che un **exploit** di essa può portare. Ci sono degli standard industriali, detti **CVSS**, che permettono di valutare il grado di rischio di una **vulnerabilità** o **falla**.
+Una vulnerabilità è una **debolezza** di un sistema informatico, causato da un errore di implementazione, un errore logico, un errore del sistema di sicurezza, etc. che può essere sfruttato da un malintenzionato per minare l'attività di un servizio. Una vulnerabilità può essere classificata in base all'impatto che un **exploit** di essa può portare. Ci sono degli standard industriali, detti **CVSS**, che permettono di valutare il grado di rischio di una **vulnerabilità** o **falla**.
 
 
 ## Feb 22, 2022
@@ -300,10 +301,10 @@ Una vulnerabilità è una **debolezza** di un sistema informatico, causato da un
 > - explain the notion of Mandatory Access Control (MAC)
 > - discuss the main advantages and disadvantages between DAC and MAC.
 
-Il **Confused Deputy** è un sistema di **Priviledge Escalation**, dove una avversario senza il permesso di accedere ad una risorsa, scrive nella risorsa mediante un altro soggetto (detto **Deputy**). 
-Il sistema, non conoscendo da chi derivano i permessi, utilizza quelli di entrambi (**Permit overlay**).
+Il **Confused Deputy** è un sistema di **Priviledge Escalation**, dove una avversario senza il permesso di accedere ad una risorsa, scrive all'interno di essa mediante un altro soggetto (detto **Deputy**). 
+Il sistema di **Access Control**, non conoscendo da chi derivano i permessi ma notandone soltanto la presenza ereditata da uno dei soggetti coinvolti, concede l'accesso (**Permit overlay**).
 
-In questo caso, le **capabilities** non soffrono di questo problema, dato che i permessi sono **esplicitamente** scritti e non può esserci confusione nel capire se un utente passa una **capability** ad un altro utente o servizio.
+In questo contesto, l'utilizzo dell\'**Access Control List** mediante l'implementazione esplicita delle **capabilities** annullerebbe il problema. Non può esserci confusione nel capire se un utente passa una **capability** ad un altro utente o servizio, dunque 
 
 Il **Discretionary Access Control** (o **DAC**) è un sistema in cui un soggetto può conferire i propri permessi ad un altro soggetto, ad esempio un eseguibile. 
 Al contrario, nel **Mandatory Access Control** (o **MAC**) solo gli amministratori possono modificare, rimuovere o fornire ulteriori accessi agli utenti.
