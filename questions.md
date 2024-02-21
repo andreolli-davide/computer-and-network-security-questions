@@ -22,7 +22,7 @@ Il **NIST** classifica le tipologie di **MFA** in base alla sicurezza con cui un
 
 1. Il primo livello (**MFA1**) richiede che vengano implementati almeno due diversi fattori di sicurezza, tra cui la password o un pin e qualcosa che l'utente possiede, come una smartcard.
 2. Il secondo livello (**MFA2**) richiede che l'oggetto fisico posseduto nel livello 1 sia sostituito con un fattore biometrico, come l'impronta digitale o il riconoscimento facciale.
-3. Il terzo livello (**MFA3**) è il più restrittivo e richiede che tutti e tre i fattori di sicurezza vengano implementati. Dunque l'utente, per affermare la propria identità, doovrà dimostrare di conoscere un informazione come una password, mostrare un documento identificativo fisico come una smartcard e inserire un proprio attributo biometrico.
+3. Il terzo livello (**MFA3**) è il più restrittivo e richiede che tutti e tre i fattori di sicurezza vengano implementati. Dunque l'utente, per affermare la propria identità, dovrà dimostrare di conoscere un informazione come una password, mostrare un documento identificativo fisico come una smartcard e inserire un proprio attributo biometrico.
 
 
 ### Question 1
@@ -61,7 +61,7 @@ Il **TLS** permette di assicurare, con un unico protocollo, che vengano rispetta
 > - Explain the trade-off between anonymity and utility in the context of realizing data sets
 
 **Privacy** è una parola che può avere diversi significati, che variano in base al contesto.
-**Privacy** può essere intesa come il diritto di un utente di controllare il possesso e l'utilizzo dei propri dati personali da parte di un'organizzazione. Oppure **Privacy** può essere l'anonimità delle azioni che vengono svolte su una determinata piattaforma.
+**Privacy** può essere intesa come il diritto di un utente di controllare il possesso e l'utilizzo dei propri dati personali da parte di un'organizzazione. Oppure **Privacy** può essere considerata l'anonimità delle azioni che vengono svolte su una determinata piattaforma.
 
 I **linkage attack** uniscono più database distinti, confrontandone gli attributi comuni. Utilizzano i cosiddetti **Quasi Identifiers**, degli attributi non univoci che permettono di avere una sufficiente correlazione con l'utente ma che, messi a confronto con altri **Quasi Identifiers**, permettono di distinguere un'entità univocamente.
 L'utilizzo di un **Quasi Identifier** è sbagliato tanto quanto utilizzare l'intera identità dell'utente, ma a volta si pone necessario inserirlo per questioni di sicurezza o per effettuare degli studi su *dataset* che lo riguardano.
@@ -121,7 +121,7 @@ La trasmissione dei dati tra utente e server deve **assolutamente** rispettare p
 L\'**Access Control** è il processo che permette di garantire o negare l'accesso di una risorsa ad un utente in base a delle **policies**.
 
 La sua architettura è composta da:
-- **Soggetto**: L'entità che effettua la richiesta
+- **Subject**: L'entità che effettua la richiesta
 - **Request**: La richiesta di accesso ad una risorsa
 - **Guard**: Servizio che controlla le **Policies** e decide se una richiesta è autorizzata o meno. È detto anche **Policy Decision Point** e si occupa di aggiungere informazioni negli **Audit Log** riguardo agli eventi riscontrati
 - **Policy**: Set di regole e requisiti che le richieste devono rispettare per accedere ad una risorsa protetta da essa
@@ -324,9 +324,9 @@ Una vulnerabilità è una **debolezza** di un sistema informatico, causato da un
 > - discuss the main advantages and disadvantages between DAC and MAC.
 
 Il **Confused Deputy** è un sistema di **Priviledge Escalation**, dove una avversario senza il permesso di accedere ad una risorsa, scrive all'interno di essa mediante un altro soggetto (detto **Deputy**). 
-Il sistema di **Access Control**, non conoscendo da chi derivano i permessi ma notandone soltanto la presenza ereditata da uno dei soggetti coinvolti, concede l'accesso (**Permit overlay**).
+Il sistema di **Access Control**, non conoscendo da chi derivano i permessi, ma notandone soltanto la presenza ereditata da uno dei soggetti coinvolti, concede l'accesso (**Permit overlay**).
 
-In questo contesto, l'utilizzo dell\'**Access Control List** mediante l'implementazione esplicita delle **capabilities** annullerebbe il problema. Non può esserci confusione nel capire se un utente passa una **capability** ad un altro utente o servizio, dunque 
+In questo contesto, l'utilizzo dell\'**Access Control List** mediante l'implementazione esplicita delle **capabilities** annullerebbe il problema, non può esserci confusione nel capire se un utente passa una **capability** ad un altro utente o servizio.
 
 Il **Discretionary Access Control** (o **DAC**) è un sistema in cui un soggetto può conferire i propri permessi ad un altro soggetto, ad esempio un eseguibile. 
 Al contrario, nel **Mandatory Access Control** (o **MAC**) solo gli amministratori possono modificare, rimuovere o fornire ulteriori accessi agli utenti.
@@ -386,5 +386,4 @@ Una **funzione di pseudoanonimizzazione** produce un identità pseudocasuale app
 Ci sono diverse possibili implementazioni di questa funzione:
 - Un **Counter**, che cresce in maniera incrementale man mano che viene associato un numero ad un'entità
 - Uno **Pseudo Random Number Generator**, che fornisce un numero pseudo casuale unico all'utente. È molto difficile da implementare ma è più flessibile del **Counter**
-
 
