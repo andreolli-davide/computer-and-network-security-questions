@@ -3,6 +3,28 @@ Made by [Davide Andreolli](https://rroll.to/sOPjVJ)
 
 ## Jul 04, 2023
 
+### Question 2 
+
+> In the context of password based authentication, describe:
+> - Multi-factor authentication 
+> - What is its purpose 
+> - The three available factors, along with an example 
+> - The three NIST-defined assurance levels.
+
+L'autenticazione multi-fattore si basa sull'implementazione di un sottogruppo dei seguenti fattori:
+- **Conoscenza**, autentica l'utente chiedendo un informazione privata (i.e. password)
+- **Possesso**, autentica l'utente chiedendo di dimostrare il possesso di un elemento riconoscitivo fisico (i.e. smart card, token, smartphone)
+- **Attributo**, autentica l'utente valutando i suoi attributi biometrici (i.e. impronta digitale, iride)
+
+L'**MFA** nasce per rafforzare le debolezze dell'utilizzo del singolo fattore di sicurezza, che da solo può essere vittima di malintenzionati (i.e. furto, clonazione). 
+
+Il **NIST** classifica le tipologie di **MFA** in base alla sicurezza con cui un sistema può assicurare l'identità di un utente.
+
+1. Il primo livello (**MFA1**) richiede che vengano implementati almeno due diversi fattori di sicurezza, tra cui la password o un pin e qualcosa che l'utente possiede, come una smartcard.
+2. Il secondo livello (**MFA"**) richiede che l'oggetto fisico posseduto nel livello 1 sia sostituito con un fattore biometrico, come l'impronta digitale o il riconoscimento facciale.
+3. Il terzo livello (**MFA3**) è il più restrittivo e richiede che tutti e tre i fattori di sicurezza vengano implementati. Dunque l'utente, per affermare la propria identità, doovrà dimostrare di conoscere un informazione come una password, mostrare un documento identificativo fisico come una smartcard e inserire un proprio attributo biometrico.
+
+
 ### Question 1
 
 > In the context of TLS and the PKI, describe:
