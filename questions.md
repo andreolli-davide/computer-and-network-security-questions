@@ -21,7 +21,7 @@ L'**MFA** nasce per rafforzare le debolezze dell'utilizzo del singolo fattore di
 Il **NIST** classifica le tipologie di **MFA** in base alla sicurezza con cui un sistema può assicurare l'identità di un utente.
 
 1. Il primo livello (**MFA1**) richiede che vengano implementati almeno due diversi fattori di sicurezza, tra cui la password o un pin e qualcosa che l'utente possiede, come una smartcard.
-2. Il secondo livello (**MFA"**) richiede che l'oggetto fisico posseduto nel livello 1 sia sostituito con un fattore biometrico, come l'impronta digitale o il riconoscimento facciale.
+2. Il secondo livello (**MFA2**) richiede che l'oggetto fisico posseduto nel livello 1 sia sostituito con un fattore biometrico, come l'impronta digitale o il riconoscimento facciale.
 3. Il terzo livello (**MFA3**) è il più restrittivo e richiede che tutti e tre i fattori di sicurezza vengano implementati. Dunque l'utente, per affermare la propria identità, doovrà dimostrare di conoscere un informazione come una password, mostrare un documento identificativo fisico come una smartcard e inserire un proprio attributo biometrico.
 
 
